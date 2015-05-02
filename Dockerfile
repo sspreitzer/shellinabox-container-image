@@ -3,7 +3,7 @@ MAINTAINER Sascha Spreitzer <sascha@spreitzer.ch>
 
 ENV VERSION 2.14-1
 
-RUN apt-get update && apt-get install -y openssl supervisor sudo shellinabox=${VERSION} && \
+RUN apt-get update && apt-get install -y openssl openss-client supervisor sudo shellinabox=${VERSION} && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD entrypoint.sh /
