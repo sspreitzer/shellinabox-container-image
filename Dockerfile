@@ -3,7 +3,7 @@ MAINTAINER Sascha Spreitzer <sascha@spreitzer.ch>
 
 ENV VERSION 2.14-1
 
-RUN apt-get update && apt-get install -y openssl openssh-client supervisor sudo shellinabox=${VERSION} && \
+RUN apt-get update && apt-get install -y openssl curl openssh-client supervisor sudo shellinabox=${VERSION} && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD entrypoint.sh /
@@ -13,10 +13,17 @@ ENV SIAB_USERCSS Black on White:+/etc/shellinabox/options-enabled/00+Black on Wh
 ENV SIAB_PORT 4200
 ENV SIAB_ADDUSER true
 ENV SIAB_USER guest
+ENV SIAB_USERID 1000
+ENV SIAB_GROUP guest
+ENV SIAB_GROUPID 1000
 ENV SIAB_PASSWORD putsafepasswordhere
+ENV SIAB_SHELL /bin/bash
+ENV SIAB_HOME /home/guest
 ENV SIAB_SUDO false
 ENV SIAB_SSL true
 ENV SIAB_SERVICE "/:LOGIN"
+ENV SIAB_PKGS none
+ENV SIAB_SCRIPT none
 
 EXPOSE 4200
 
