@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 hex()
@@ -7,7 +8,7 @@ hex()
 }
 
 echo "Preparing container .."
-COMMAND="/usr/bin/shellinaboxd --debug --no-beep -u shellinabox -g shellinabox -c /var/lib/shellinabox -p ${SIAB_PORT} --user-css \"${SIAB_USERCSS}\""
+COMMAND="/usr/bin/shellinaboxd --debug --no-beep -u shellinabox -g shellinabox -c /var/lib/shellinabox -p ${SIAB_PORT} --user-css ${SIAB_USERCSS}"
 
 if [ "$SIAB_PKGS" != "none" ]; then
 	set +e
@@ -19,7 +20,7 @@ if [ "$SIAB_PKGS" != "none" ]; then
 fi
 
 if [ "$SIAB_SSL" != "true" ]; then
-	COMMAND="${COMMAND} -t"
+	COMMAND+=" -t"
 fi
 
 if [ "${SIAB_ADDUSER}" == "true" ]; then
@@ -38,10 +39,8 @@ if [ "${SIAB_ADDUSER}" == "true" ]; then
 fi
 
 for service in ${SIAB_SERVICE}; do
-	COMMAND="${COMMAND} -s ${service}"
+	COMMAND+=" -s ${service}"
 done
-
-sed -i "s|__COMMAND__|${COMMAND}|g" /etc/supervisor/conf.d/shellinabox.conf
 
 if [ "$SIAB_SCRIPT" != "none" ]; then
 	set +e
@@ -53,8 +52,11 @@ if [ "$SIAB_SCRIPT" != "none" ]; then
 fi
 
 echo "Starting container .."
-if [ "$@" != "shellinabox" ]; then
-	exec "$@"
+if [ "$@" = "shellinabox" ]; then
+	echo "Executing: ${COMMAND}"
+	exec ${COMMAND}
 else
-	exec /usr/bin/supervisord
+	echo "Not executing: ${COMMAND}"
+	echo "Executing: ${@}"
+	exec $@
 fi

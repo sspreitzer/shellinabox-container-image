@@ -1,35 +1,38 @@
-FROM ubuntu:vivid
-MAINTAINER Sascha Spreitzer <sascha@spreitzer.ch>
+FROM ubuntu:xenial
 
-ENV VERSION 2.14-1
+ENV SIAB_VERSION=2.19 \
+  SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css,Reverse:-/etc/shellinabox/options-enabled/00_White-On-Black.css;Colors:+/etc/shellinabox/options-enabled/01+Color-Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css" \
+  SIAB_PORT=4200 \
+  SIAB_ADDUSER=true \
+  SIAB_USER=guest \
+  SIAB_USERID=1000 \
+  SIAB_GROUP=guest \
+  SIAB_GROUPID=1000 \
+  SIAB_PASSWORD=putsafepasswordhere \
+  SIAB_SHELL=/bin/bash \
+  SIAB_HOME=/home/guest \
+  SIAB_SUDO=false \
+  SIAB_SSL=true \
+  SIAB_SERVICE=/:LOGIN \
+  SIAB_PKGS=none \
+  SIAB_SCRIPT=none
 
-RUN apt-get update && apt-get install -y openssl curl openssh-client supervisor sudo shellinabox=${VERSION} && \
-  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-ADD entrypoint.sh /
-ADD shellinabox.conf /etc/supervisor/conf.d/
-
-ENV SIAB_USERCSS Black on White:+/etc/shellinabox/options-enabled/00+Black on White.css,White On Black:-/etc/shellinabox/options-enabled/00_White On Black.css;Color Terminal:+/etc/shellinabox/options-enabled/01+Color Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css
-ENV SIAB_PORT 4200
-ENV SIAB_ADDUSER true
-ENV SIAB_USER guest
-ENV SIAB_USERID 1000
-ENV SIAB_GROUP guest
-ENV SIAB_GROUPID 1000
-ENV SIAB_PASSWORD putsafepasswordhere
-ENV SIAB_SHELL /bin/bash
-ENV SIAB_HOME /home/guest
-ENV SIAB_SUDO false
-ENV SIAB_SSL true
-ENV SIAB_SERVICE "/:LOGIN"
-ENV SIAB_PKGS none
-ENV SIAB_SCRIPT none
+RUN apt-get update && apt-get install -y openssl curl openssh-client sudo \
+      shellinabox=${SIAB_VERSION} && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+  ln -sf '/etc/shellinabox/options-enabled/00+Black on White.css' \
+    /etc/shellinabox/options-enabled/00+Black-on-White.css && \
+  ln -sf '/etc/shellinabox/options-enabled/00_White On Black.css' \
+    /etc/shellinabox/options-enabled/00_White-On-Black.css && \
+  ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
+    /etc/shellinabox/options-enabled/01+Color-Terminal.css
 
 EXPOSE 4200
 
-VOLUME /etc/shellinabox
-VOLUME /var/log/supervisor
-VOLUME /home
+VOLUME /etc/shellinabox /var/log/supervisor /home
 
-ENTRYPOINT ["/entrypoint.sh"]
+ADD assets/entrypoint.sh /usr/local/sbin/
+
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["shellinabox"]
