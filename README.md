@@ -15,7 +15,7 @@ Dockerfile to build a shellinabox container image.
 
 # Version
 
-Current Version: **2.14-1**
+Current Version: **2.19**
 
 # Usage
 
