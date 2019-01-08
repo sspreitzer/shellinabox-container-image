@@ -6,7 +6,7 @@
      - [Pull The Image](#pull-the-image)
      - [Run The Image](#run-the-image)
  - [Configuration](#configuration)
-     - [Available Configuration Parameters](#available-configuration-parameters) 
+     - [Available Configuration Parameters](#available-configuration-parameters)
  - [References](#references)
 
 # Introduction
@@ -41,6 +41,7 @@ docker run -p 4200:4200 -e SIAB_PASSWORD=xyz678abc -e SIAB_SUDO=true sspreitzer/
 
  - **SIAB_USERCSS**: String of configured and enabled css extensions. Defaults to system default list.
  - **SIAB_PORT** The port where shellinabox should listen to. Defaults to 4200.
+ - **SIAB_PORT_FROM_PORT** Sets `SIAB_PORT` from `PORT`. Defaults to false.
  - **SIAB_ADDUSER** Whether to create a default user. Defaults to true.
  - **SIAB_USER** The name of the user. Defaults to guest.
  - **SIAB_USERID** The numeric ID of the user. Defaults to 1000.
