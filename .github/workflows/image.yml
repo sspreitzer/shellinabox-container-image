@@ -39,7 +39,7 @@ jobs:
           context: ./${{ matrix.os }}/
           pull: true
           push: true
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/sspreitzer/shellinabox-container-image:${{ matrix.os }}
             docker.io/sspreitzer/shellinabox:${{ matrix.os }}
