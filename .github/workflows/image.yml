@@ -1,0 +1,42 @@
+name: Build and Push the shellinabox Container Images
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '00 03 * * 0'
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - latest
+          - ubuntu
+          - centos
+          - fedora
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Docker Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./${{ matrix.os }}/
+          pull: true
+          push: true
+          tags: |
+            ghcr.io/sspreitzer/shellinabox-container-image:${{ matrix.os }}
+            docker.ui/sspreitzer/shellinabox:${{ matrix.os }}
