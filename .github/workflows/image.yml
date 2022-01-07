@@ -41,4 +41,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/sspreitzer/shellinabox-container-image:${{ matrix.os }}
-            docker.ui/sspreitzer/shellinabox:${{ matrix.os }}
+            docker.io/sspreitzer/shellinabox:${{ matrix.os }}
