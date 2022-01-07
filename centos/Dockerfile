@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:7
 
 ENV SIAB_USERCSS="Colors:+/usr/share/shellinabox/color.css,Normal:-/usr/share/shellinabox/white-on-black.css,Monochrome:-/usr/share/shellinabox/monochrome.css" \
     SIAB_PORT=4200 \
@@ -17,9 +17,9 @@ ENV SIAB_USERCSS="Colors:+/usr/share/shellinabox/color.css,Normal:-/usr/share/sh
     SIAB_PKGS2=none \
     SIAB_SCRIPT=none
 
-RUN dnf install -y epel-release centos-release-scl centos-release-scl-rh centos-release-openshift-origin && \
-    dnf install -y openssh-clients sudo shellinabox && \
-    dnf clean all && \
+RUN yum install -y epel-release && \
+    yum install -y openssh-clients sudo shellinabox && \
+    yum clean all && \
     rm -rf /var/cache/yum
 
 EXPOSE 4200
