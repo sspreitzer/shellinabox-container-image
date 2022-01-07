@@ -11,6 +11,7 @@ jobs:
   image:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         os:
           - latest
