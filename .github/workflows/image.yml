@@ -20,26 +20,30 @@ jobs:
           - fedora
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Setup Builder
+        uses: docker/setup-buildx-action@v2
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Docker Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v2
+      - name: Build and Push Container Image
+        uses: docker/build-push-action@v3
         with:
+          platforms: linux/amd64,linux/arm64
           context: ./${{ matrix.os }}/
           pull: true
           push: true
-          # platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/sspreitzer/shellinabox-container-image:${{ matrix.os }}
             docker.io/sspreitzer/shellinabox:${{ matrix.os }}
