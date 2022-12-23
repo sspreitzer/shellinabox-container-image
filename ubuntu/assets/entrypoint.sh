@@ -13,6 +13,7 @@ COMMAND="/usr/bin/shellinaboxd --debug --no-beep --disable-peer-check -u shellin
 if [ "$SIAB_PKGS" != "none" ]; then
 	set +e
 	/usr/bin/apt-get update
+	/usr/bin/apt-get upgrade -y
 	/usr/bin/apt-get install -y $SIAB_PKGS
 	/usr/bin/apt-get clean
 	/bin/rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
