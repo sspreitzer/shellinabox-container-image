@@ -1,3 +1,4 @@
+---
 name: Build and Push the shellinabox Container Images
 on:
   push:
@@ -18,6 +19,7 @@ jobs:
           - ubuntu
           - centos
           - fedora
+          - debian
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -45,5 +47,6 @@ jobs:
           pull: true
           push: true
           tags: |
-            ghcr.io/sspreitzer/shellinabox-container-image:${{ matrix.os }}
-            docker.io/sspreitzer/shellinabox:${{ matrix.os }}
+            ghcr.io/jheinitz/shellinabox-container-image:${{ matrix.os }}
+            docker.io/jheinitz/shellinabox:${{ matrix.os }}
+...
